@@ -37,9 +37,17 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("2- Consultar los videos con mas likes")
+    print("3- Consultar  el video trending el mayor numero de dias")
+    print("4- Consultar video trending con percepcion sumamente positiva")
+    print("5- Consultar videos con mas comentarios por tag")
 
-catalog = None
+def initCatalog():
+    return controller.initCatalog()
+
+
+def loadData(catalog):
+    controller.loadData(catalog)
 
 """
 Menu principal
@@ -49,9 +57,43 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
+        catalog = initCatalog()
+        loadData(catalog)
+        print('Videos cargados: ' + str(lt.size(catalog['videos'])))
+        print('Titulo primer video: ' + str(lt.size(catalog['authors']))
+        + 'Titulo del canal: ' + str(lt.size(catalog['authors']))
+        +'Titulo del canal: ' + str(lt.size(catalog['authors']))
+        +'Dia que estuvo trending: ' + str(lt.size(catalog['authors']))
+        +'Pais: ' + str(lt.size(catalog['authors']))
+        +'Visitas: ' + str(lt.size(catalog['authors']))
+        +'Likes: ' + str(lt.size(catalog['authors']))
+        +'Dislikes: ' + str(lt.size(catalog['authors'])))
+        print('Categorias cargadas: ' + str(lt.size(catalog['categories'])))
 
     elif int(inputs[0]) == 2:
-        pass
+        category_name = input("Ingrese la categoria a buscar: ")
+        country = input("Ingrese el pais a buscar: ")
+        numerovideos = input("Ingrese el numero de videos que quiere listar: ")
+        mas_likes = controller.getLikedVideos(catalog, category_name,
+        country, numerovideos)
+        printLikedVideos(mas_likes)
+
+    elif int(inputs[0]) == 3:
+        country = input("Ingrese el pais a buscar: ")
+        trending_positiva = controller.getAltamentePositiva(catalog, country)
+        printAuthorData(trending_positiva)
+
+    elif int(inputs[0]) == 4:
+        category_name = input("Ingrese la categoria a buscar: ")
+        trending_spositiva = controller.getSumamentePositiva(catalog, category_name)
+        printSumamentePositiva(mas_likes)
+
+    elif int(inputs[0]) == 5:
+        country = input("Ingrese el pais a buscar: ")
+        numerovideos = input("Ingrese el numero de videos que quiere listar: ")
+        tag = input("Ingrese la etiqueta del video: ")
+        mas_comentarios = controller.getComentariosVideos(catalog, country, numerovideos, tag)
+        printComentariosVideos(mas_comentarios)
 
     else:
         sys.exit(0)
