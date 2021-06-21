@@ -46,7 +46,7 @@ def loadData(catalog):
     estructura de datos
     """
     loadVideos(catalog)
-    loadCategory(catalog)
+    loadCategories(catalog)
     
 
 def loadVideos(catalog):
@@ -59,14 +59,15 @@ def loadVideos(catalog):
         model.addVideo(catalog, video)
 
 
-def loadCategory(catalog):
+def loadCategories(catalog):
     """
     Carga todas las categorías del archivo y los agrega a la lista de categorías
     """
     categoryfile = cf.data_dir + 'category-id.csv'
     input_file = csv.DictReader(open(categoryfile, encoding='utf-8'))
     for cat in input_file:
-        model.addCategory(catalog, cat)
+        cat['id\tname'] = cat['id\tname'].split("\t")
+        model.addCategory(catalog, cat['id\tname'][0], cat['id\tname'][1])
 
 # Funciones de ordenamiento
 

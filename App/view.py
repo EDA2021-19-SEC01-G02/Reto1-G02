@@ -62,14 +62,17 @@ while True:
         catalog = initCatalog()
         loadData(catalog)
         print('Videos cargados: ' + str(lt.size(catalog['videos'])))
+        """
         print('Titulo primer video: ' + str(lt.size(catalog['authors']))
         +'Titulo del canal: ' + str(lt.size(catalog['authors']))
-        +'Dia que estuvo trending: ' + str(lt.size(catalog['authors']))
+        +'Dia que estuvo trending: ' + str(lt.size(catalog['authors']))1
         +'Pais: ' + str(lt.size(catalog['authors']))
         +'Visitas: ' + str(lt.size(catalog['authors']))
         +'Likes: ' + str(lt.size(catalog['authors']))
         +'Dislikes: ' + str(lt.size(catalog['authors'])))
-        print('Categorias cargadas: ' + str(lt.size(catalog['categories'])))
+        """
+        print('Categorias cargadas:')
+        print(catalog['categories'])
 
     elif int(inputs[0]) == 2:
         category_name = input("Ingrese la categoria a buscar: ")
