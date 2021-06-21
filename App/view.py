@@ -63,7 +63,6 @@ while True:
         loadData(catalog)
         print('Videos cargados: ' + str(lt.size(catalog['videos'])))
         print('Titulo primer video: ' + str(lt.size(catalog['authors']))
-        + 'Titulo del canal: ' + str(lt.size(catalog['authors']))
         +'Titulo del canal: ' + str(lt.size(catalog['authors']))
         +'Dia que estuvo trending: ' + str(lt.size(catalog['authors']))
         +'Pais: ' + str(lt.size(catalog['authors']))
@@ -87,14 +86,14 @@ while True:
 
     elif int(inputs[0]) == 4:
         category_name = input("Ingrese la categoria a buscar: ")
-        trending_spositiva = controller.getSumamentePositiva(catalog, category_name)
-        printSumamentePositiva(mas_likes)
+        trending_positiva = controller.getSumamentePositiva(catalog, category_name)
+        printSumamentePositiva(trending_positiva)
 
     elif int(inputs[0]) == 5:
         country = input("Ingrese el pais a buscar: ")
-        numerovideos = input("Ingrese el numero de videos que quiere listar: ")
+        numero_videos = input("Ingrese el numero de videos que quiere listar: ")
         tag = input("Ingrese la etiqueta del video: ")
-        mas_comentarios = controller.getComentariosVideos(catalog, country, numerovideos, tag)
+        mas_comentarios = controller.getComentariosVideos(catalog, country, numero_videos, tag)
         printComentariosVideos(mas_comentarios)
 
     else:
