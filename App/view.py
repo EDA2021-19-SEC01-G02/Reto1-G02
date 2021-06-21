@@ -62,15 +62,15 @@ while True:
         catalog = initCatalog()
         loadData(catalog)
         print('Videos cargados: ' + str(lt.size(catalog['videos'])))
-        """
-        print('Titulo primer video: ' + str(lt.size(catalog['authors']))
-        +'Titulo del canal: ' + str(lt.size(catalog['authors']))
-        +'Dia que estuvo trending: ' + str(lt.size(catalog['authors']))1
-        +'Pais: ' + str(lt.size(catalog['authors']))
-        +'Visitas: ' + str(lt.size(catalog['authors']))
-        +'Likes: ' + str(lt.size(catalog['authors']))
-        +'Dislikes: ' + str(lt.size(catalog['authors'])))
-        """
+        
+        print('Titulo primer video: ' + str(lt.firstElement(catalog['videos'])['title'])
+        +', Titulo del canal: ' + str(lt.firstElement(catalog['videos'])['channel_title'])
+        +', Dia que estuvo trending: ' + str(lt.firstElement(catalog['videos'])['trending_date'])
+        +', Pais: ' + str(lt.firstElement(catalog['videos'])['country'])
+        +', Visitas: ' + str(lt.firstElement(catalog['videos'])['views'])
+        +', Likes: ' + str(lt.firstElement(catalog['videos'])['likes'])
+        +', Dislikes: ' + str(lt.firstElement(catalog['videos'])['dislikes']))
+        
         print('Categorias cargadas:')
         print(catalog['categories'])
 
