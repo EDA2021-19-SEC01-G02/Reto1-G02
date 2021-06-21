@@ -41,6 +41,8 @@ def printMenu():
     print("3- Consultar  el video trending el mayor numero de dias")
     print("4- Consultar video trending con percepcion sumamente positiva")
     print("5- Consultar videos con mas comentarios por tag")
+    print("0- Salir")
+
 
 def initCatalog():
     return controller.initCatalog()
