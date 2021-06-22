@@ -31,11 +31,11 @@ El controlador se encarga de mediar entre la vista y el modelo.
 
 # Inicialización del Catálogo de videos
 
-def initCatalog():
+def initCatalog(format):
     """
     Llama a la función de inicialización del catálogo del modelo
     """
-    catalog = model.newCatalog()
+    catalog = model.newCatalog(format)
     return catalog
 
 # Funciones para la carga de datos

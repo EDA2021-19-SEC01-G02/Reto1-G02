@@ -37,16 +37,21 @@ los mismos.
 
 # Construccion de modelos
 
-def newCatalog():
+def newCatalog(format):
     """
     Inicializa el catálogo de videos. Crea una lista vacia para guardar
     todos los videos, adicionalmente, crea una para las categorías. Retorna el catalogo inicializado.
     """
+    if format == 1:
+        format = 'ARRAY_LIST'
+    elif format == 2:
+        format = 'LINKED_LIST'
+
     catalog = {'videos': None,
                'categories': None}
 
-    catalog['videos'] = lt.newList('ARRAY_LIST')
-    catalog['categories'] = lt.newList('ARRAY_LIST')
+    catalog['videos'] = lt.newList(format)
+    catalog['categories'] = lt.newList(format)
 
     return catalog
 

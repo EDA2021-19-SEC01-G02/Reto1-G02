@@ -44,8 +44,8 @@ def printMenu():
     print("0- Salir")
 
 
-def initCatalog():
-    return controller.initCatalog()
+def initCatalog(format):
+    return controller.initCatalog(format)
 
 
 def loadData(catalog):
@@ -58,8 +58,14 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
+
+        print('Seleccione la forma en que quiere cargar los datos')
+        print("1- Array list")
+        print("2- Lista simplemente encadenada")
+        format = int(input('Seleccione una opción para continuar\n'))
+
         print("Cargando información de los archivos ....")
-        catalog = initCatalog()
+        catalog = initCatalog(format)
         loadData(catalog)
         print('Videos cargados: ' + str(lt.size(catalog['videos'])))
         
