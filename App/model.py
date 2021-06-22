@@ -55,6 +55,7 @@ def newCatalog(format):
 
     return catalog
 
+
 # Funciones para agregar informacion al catalogo
 
 def addVideo(catalog, video):
@@ -79,8 +80,101 @@ def newCategory(id, name):
     category['category_id'] = id
     return category
 
+def subList(catalog, numerovideos, numelem):
+    """ Retorna una sublista de la lista lst.
+
+    Se retorna una lista que contiene los elementos a partir de la
+    posicion pos, con una longitud de numelem elementos.
+    Se crea una copia de dichos elementos y se retorna una lista nueva.
+
+    Args:
+        catalog: La lista a examinar
+        numerovideos: Posición a partir de la que se desea obtener la sublista
+        numelem: Numero de elementos a copiar en la sublista
+
+    Raises:
+        Exception
+    """
+    try:
+        return lt.subList(lst, numerovideos, numelem)
+    except Exception as exp:
+        error.reraise(exp, 'List->subList: ')    
+
 # Funciones de consulta
 
 # Funciones utilizadas para comparar elementos dentro de una lista
-
+def cmpVideosByLikes(video1, video2):
+""" Devuelve verdadero (True) si los likes de video1 
+son menores que los del video2 Args: video1: informacion del 
+primer video que incluye su valor 'likes'"""
+    return (float(book1['average_rating']) < float(book2['average_rating']))
 # Funciones de ordenamiento
+def insertionsort(lst, cmpfunction):
+    size = lt.size(lst)
+    pos1 = 1
+    while pos1 <= size:
+        pos2 = pos1
+        while (pos2 > 1) and (cmpfunction(
+               lt.getElement(lst, pos2), lt.getElement(lst, pos2-1))):
+            lt.exchange(lst, pos2, pos2-1)
+            pos2 -= 1
+        pos1 += 1
+    return lst
+
+def selectionsort(lst, cmpfunction):
+    size = lt.size(lst)
+    pos1 = 1
+    while pos1 < size:
+        minimum = pos1    # minimun tiene el menor elemento
+        pos2 = pos1 + 1
+        while (pos2 <= size):
+            if (cmpfunction(lt.getElement(lst, pos2),
+               (lt.getElement(lst, minimum)))):
+                minimum = pos2  # minimum = posición elemento más pequeño
+            pos2 += 1
+        lt.exchange(lst, pos1, minimum)  # elemento más pequeño -> elem pos1
+        pos1 += 1
+    return lst
+
+def shellsort(lst, cmpfunction):
+    n = lt.size(lst)
+    h = 1
+    while h < n/3:   # primer gap. La lista se h-ordena con este tamaño
+        h = 3*h + 1
+    while (h >= 1):
+        for i in range(h, n):
+            j = i
+            while (j >= h) and cmpfunction(
+                                lt.getElement(lst, j+1),
+                                lt.getElement(lst, j-h+1)):
+                lt.exchange(lst, j+1, j-h+1)
+                j -= h
+        h //= 3    # h se decrementa en un tercio
+    return lst
+
+def sortVideos(catalog):
+    if sorting == 1:
+        sub_list = lt.subList(catalog['videos'], 1, size) 
+        sub_list = sub_list.copy() 
+        start_time = time.process_time() 
+        sorted_list = sa.insertionsort(sub_list,cmpVideosByLikes) 
+        stop_time = time.process_time() 
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        return elapsed_time_mseg, sorted_list
+    elif sorting == 2:
+        sub_list = lt.subList(catalog['videos'], 1, size) 
+        sub_list = sub_list.copy() 
+        start_time = time.process_time() 
+        sorted_list = sa.selectionsort(sub_list,cmpVideosByLikes) 
+        stop_time = time.process_time() 
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        return elapsed_time_mseg, sorted_list
+    else:
+                sub_list = lt.subList(catalog['videos'], 1, size) 
+        sub_list = sub_list.copy() 
+        start_time = time.process_time() 
+        sorted_list = sa.shellsort(sub_list,cmpVideosByLikes) 
+        stop_time = time.process_time() 
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        return elapsed_time_mseg, sorted_list
+    
