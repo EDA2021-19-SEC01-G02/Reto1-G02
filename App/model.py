@@ -86,7 +86,7 @@ def newCategory(id, name):
 def getLikedVideos(catalog, category_name,country, numerovideos,sorting):
     for i in range (1, lt.size(catalog['categories']+1)):
         lista_categorias = catalog['categories']
-        categoria = lt.getElement(lista_categorias, j)
+        categoria = lt.getElement(lista_categorias, i)
         if categoria['name']== category_name:
             id = categoria['category_id']
     lista_inicial = catalog['videos']
@@ -98,27 +98,7 @@ def getLikedVideos(catalog, category_name,country, numerovideos,sorting):
                 lt.addLast(lista_sortear, video)
     sortVideos(lista_sortear,sorting)
     sublista = lt.subList(lista_sortear,1 , numerovideos)
-    return sublista
-
-def subList(catalog, numerovideos, numelem):
-    """ Retorna una sublista de la lista lst.
-
-    Se retorna una lista que contiene los elementos a partir de la
-    posicion pos, con una longitud de numelem elementos.
-    Se crea una copia de dichos elementos y se retorna una lista nueva.
-
-    Args:
-        catalog: La lista a examinar
-        numerovideos: Posición a partir de la que se desea obtener la sublista
-        numelem: Numero de elementos a copiar en la sublista
-
-    Raises:
-        Exception
-    """
-    try:
-        return lt.subList(lst, numerovideos, numelem)
-    except Exception as exp:
-        error.reraise(exp, 'List->subList: ')    
+    return sublista    
 
 # Funciones de consulta
 
@@ -138,7 +118,7 @@ def sortVideos(lista,sorting):
         elapsed_time_mseg = (stop_time - start_time)*1000
         return elapsed_time_mseg, sorted_list
     elif sorting == 2:
-        sub_list = lt.subList(catalog['videos'], 1, size) 
+        sub_list = lt.subList(lista['videos'], 1, size) 
         sub_list = sub_list.copy() 
         start_time = time.process_time() 
         sorted_list = se.sort(sub_list,cmpVideosByLikes) 
@@ -146,7 +126,7 @@ def sortVideos(lista,sorting):
         elapsed_time_mseg = (stop_time - start_time)*1000
         return elapsed_time_mseg, sorted_list
     else:
-        sub_list = lt.subList(catalog['videos'], 1, size) 
+        sub_list = lt.subList(lista['videos'], 1, size) 
         sub_list = sub_list.copy() 
         start_time = time.process_time() 
         sorted_list = so.sort(sub_list,cmpVideosByLikes) 
