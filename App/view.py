@@ -25,6 +25,8 @@ import sys
 import controller
 from DISClib.ADT import list as lt
 assert cf
+default_limit = 1000
+sys.setrecursionlimit(default_limit*10)
 
 
 """
@@ -84,6 +86,11 @@ while True:
         category_name = input("Ingrese la categoria a buscar: ")
         country = input("Ingrese el pais a buscar: ")
         numerovideos = input("Ingrese el numero de videos que quiere listar: ")
+        print('Seleccione el tipo de algoritmo iterativo')
+        print("1- Shellsort")
+        print("2- Selectionsort")
+        print("3- Insertsort")
+        sorting = input("Ingrese el tipo de algoritmo iterativo: ")
         mas_likes = controller.getLikedVideos(catalog, category_name,
         country, numerovideos)
         printLikedVideos(mas_likes)

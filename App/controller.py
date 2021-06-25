@@ -69,6 +69,9 @@ def loadCategories(catalog):
         cat['id\tname'] = cat['id\tname'].split("\t")
         model.addCategory(catalog, cat['id\tname'][0], cat['id\tname'][1])
 
+def getLikedVideos(catalog, category_name,country, numerovideos,sorting):
+    return model.getLikedVideos(catalog, category_name,country, numerovideos,sorting):   
+
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo

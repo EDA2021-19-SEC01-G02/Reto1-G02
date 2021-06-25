@@ -26,6 +26,8 @@
 
 
 import config as cf
+from DISClib.Algorithms.Sorting import insertionsort as so
+from DISClib.Algorithms.Sorting import selectionsort as se
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
 assert cf
@@ -80,6 +82,23 @@ def newCategory(id, name):
     category['category_id'] = id
     return category
 
+def getLikedVideos(catalog, category_name,country, numerovideos,sorting):
+    for i in range (1, lt.size(catalog['categories']+1)):
+        lista_categorias = catalog['categories']
+        categoria = lt.getElement(lista_categorias, j)
+        if categoria['name']== category_name:
+            id = categoria['category_id']
+    lista_inicial = catalog['videos']
+    lista_sortear= lt.newList('ARRAY_LIST')
+    for j in range(1,lt.size(catalog['videos']+1):
+        video = lt.getElement(lista_inicial, j)
+        if video["category_id"] == id:   
+            if video["country"] == country:
+                lt.addLast(lista_sortear, video)
+    sortVideos(lista_sortear,sorting)
+    sublista = lt.subList(lista_sortear,1 , numerovideos)
+    return sublista
+
 def subList(catalog, numerovideos, numelem):
     """ Retorna una sublista de la lista lst.
 
@@ -107,57 +126,13 @@ def cmpVideosByLikes(video1, video2):
 """ Devuelve verdadero (True) si los likes de video1 
 son menores que los del video2 Args: video1: informacion del 
 primer video que incluye su valor 'likes'"""
-    return (float(book1['average_rating']) < float(book2['average_rating']))
+    return (video1['likes']) < (video2['likes']))
 # Funciones de ordenamiento
-def insertionsort(lst, cmpfunction):
-    size = lt.size(lst)
-    pos1 = 1
-    while pos1 <= size:
-        pos2 = pos1
-        while (pos2 > 1) and (cmpfunction(
-               lt.getElement(lst, pos2), lt.getElement(lst, pos2-1))):
-            lt.exchange(lst, pos2, pos2-1)
-            pos2 -= 1
-        pos1 += 1
-    return lst
 
-def selectionsort(lst, cmpfunction):
-    size = lt.size(lst)
-    pos1 = 1
-    while pos1 < size:
-        minimum = pos1    # minimun tiene el menor elemento
-        pos2 = pos1 + 1
-        while (pos2 <= size):
-            if (cmpfunction(lt.getElement(lst, pos2),
-               (lt.getElement(lst, minimum)))):
-                minimum = pos2  # minimum = posición elemento más pequeño
-            pos2 += 1
-        lt.exchange(lst, pos1, minimum)  # elemento más pequeño -> elem pos1
-        pos1 += 1
-    return lst
-
-def shellsort(lst, cmpfunction):
-    n = lt.size(lst)
-    h = 1
-    while h < n/3:   # primer gap. La lista se h-ordena con este tamaño
-        h = 3*h + 1
-    while (h >= 1):
-        for i in range(h, n):
-            j = i
-            while (j >= h) and cmpfunction(
-                                lt.getElement(lst, j+1),
-                                lt.getElement(lst, j-h+1)):
-                lt.exchange(lst, j+1, j-h+1)
-                j -= h
-        h //= 3    # h se decrementa en un tercio
-    return lst
-
-def sortVideos(catalog):
+def sortVideos(lista,sorting):
     if sorting == 1:
-        sub_list = lt.subList(catalog['videos'], 1, size) 
-        sub_list = sub_list.copy() 
         start_time = time.process_time() 
-        sorted_list = sa.insertionsort(sub_list,cmpVideosByLikes) 
+        sorted_list = sa.sort(lista,cmpVideosByLikes) 
         stop_time = time.process_time() 
         elapsed_time_mseg = (stop_time - start_time)*1000
         return elapsed_time_mseg, sorted_list
@@ -165,16 +140,15 @@ def sortVideos(catalog):
         sub_list = lt.subList(catalog['videos'], 1, size) 
         sub_list = sub_list.copy() 
         start_time = time.process_time() 
-        sorted_list = sa.selectionsort(sub_list,cmpVideosByLikes) 
+        sorted_list = se.sort(sub_list,cmpVideosByLikes) 
         stop_time = time.process_time() 
         elapsed_time_mseg = (stop_time - start_time)*1000
         return elapsed_time_mseg, sorted_list
     else:
-                sub_list = lt.subList(catalog['videos'], 1, size) 
+        sub_list = lt.subList(catalog['videos'], 1, size) 
         sub_list = sub_list.copy() 
         start_time = time.process_time() 
-        sorted_list = sa.shellsort(sub_list,cmpVideosByLikes) 
+        sorted_list = so.sort(sub_list,cmpVideosByLikes) 
         stop_time = time.process_time() 
         elapsed_time_mseg = (stop_time - start_time)*1000
         return elapsed_time_mseg, sorted_list
-    
