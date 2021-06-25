@@ -83,7 +83,15 @@ def newCategory(id, name):
     category['category_id'] = id
     return category
 
-def getLikedVideos(catalog, category_name,country, numerovideos,sorting):
+def getLikedVideos(catalog, category_name,country, numerovideos,sorting,muestra):
+    
+    #Codigo solo para el lab 4
+    lista_muestra = lt.subList(catalog['videos'],1,muestra)
+    t, lista_muestra = sortVideos(lista_muestra, sorting)
+    print(t)
+    return None
+
+    """
     id = -1000
     sublista = None
 
@@ -103,7 +111,6 @@ def getLikedVideos(catalog, category_name,country, numerovideos,sorting):
                 lt.addLast(lista_sortear, video)
 
         t, lista_sortear = sortVideos(lista_sortear, sorting)
-        print(t)
         if numerovideos <= lt.size(lista_sortear):
             sublista = lt.subList(lista_sortear, 1, numerovideos)
         else:
@@ -111,6 +118,7 @@ def getLikedVideos(catalog, category_name,country, numerovideos,sorting):
             
     
     return sublista    
+    """
 
 # Funciones de consulta
 

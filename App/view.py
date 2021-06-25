@@ -88,9 +88,11 @@ while True:
         print(catalog['categories'])
 
     elif int(inputs[0]) == 2:
+        """ 
         category_name = input("Ingrese la categoria a buscar: ")
         country = input("Ingrese el pais a buscar: ")
         numerovideos = int(input("Ingrese el numero de videos que quiere listar: "))
+        """
         print('Seleccione el tipo de algoritmo iterativo')
         print("1- Shellsort")
         print("2- Selectionsort")
@@ -104,7 +106,15 @@ while True:
         else:
             sorting = 'INSERTION_SORT'
 
-        mas_likes = controller.getLikedVideos(catalog, category_name, country, numerovideos, sorting)
+
+        #Codigo solo para el lab 4
+        muestra = int(input('Ingrese el tamaño de la muestra: '))
+        category_name = None
+        country = None
+        numerovideos = None
+
+
+        mas_likes = controller.getLikedVideos(catalog, category_name, country, numerovideos, sorting, muestra)
 
         if mas_likes != None:
             printLikedVideos(mas_likes)

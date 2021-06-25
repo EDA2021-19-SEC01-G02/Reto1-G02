@@ -53,7 +53,7 @@ def loadVideos(catalog):
     """
     Carga los videos del archivo. 
     """
-    videosfile = cf.data_dir + 'videos-small.csv'
+    videosfile = cf.data_dir + 'videos-large.csv'
     input_file = csv.DictReader(open(videosfile, encoding='utf-8'))
     for video in input_file:
         model.addVideo(catalog, video)
@@ -69,8 +69,8 @@ def loadCategories(catalog):
         cat['id\tname'] = cat['id\tname'].split("\t")
         model.addCategory(catalog, cat['id\tname'][0], cat['id\tname'][1])
 
-def getLikedVideos(catalog, category_name,country, numerovideos,sorting):
-    return model.getLikedVideos(catalog, category_name,country, numerovideos,sorting)  
+def getLikedVideos(catalog, category_name,country, numerovideos,sorting,muestra):
+    return model.getLikedVideos(catalog, category_name,country, numerovideos,sorting,muestra)  
 
 # Funciones de ordenamiento
 
