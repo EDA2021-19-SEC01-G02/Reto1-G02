@@ -85,25 +85,31 @@ def newCategory(id, name):
 
 def getLikedVideos(catalog, category_name,country, numerovideos,sorting):
     id = -1000
+    sublista = None
+
     for i in range(1, lt.size(catalog['categories'])+1):
         categoria = lt.getElement(catalog['categories'], i)
         if categoria['name'].lower() == category_name.lower():
             id = categoria['category_id']
     if id == -1000:
         print('No existe esa categoría')
-        exit()
+    else:    
+        lista_inicial = catalog['videos']
+        lista_sortear= lt.newList('ARRAY_LIST')
 
-    lista_inicial = catalog['videos']
-    lista_sortear= lt.newList('ARRAY_LIST')
-
-    for j in range(1,lt.size(catalog['videos'])+1):
-        video = lt.getElement(lista_inicial, j)
-        if video["category_id"] == id and video["country"].lower().strip() == country.lower():   
+        for j in range(1,lt.size(catalog['videos'])+1):
+            video = lt.getElement(lista_inicial, j)
+            if video["category_id"] == id and video["country"].lower().strip() == country.lower():   
                 lt.addLast(lista_sortear, video)
 
-    t, lista_sortear = sortVideos(lista_sortear, sorting)
-    print(t)
-    sublista = lt.subList(lista_sortear, 1, numerovideos)
+        t, lista_sortear = sortVideos(lista_sortear, sorting)
+        print(t)
+        if numerovideos <= lt.size(lista_sortear):
+            sublista = lt.subList(lista_sortear, 1, numerovideos)
+        else:
+            print('No hay suficientes videos en la lista')
+            
+    
     return sublista    
 
 # Funciones de consulta
@@ -132,5 +138,5 @@ def sortVideos(lista,sorting):
         sorted_list = so.sort(lista,cmpVideosByLikes) 
         stop_time = time.process_time() 
         t = (stop_time - start_time)*1000
-        
+
     return t, sorted_list

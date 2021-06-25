@@ -105,7 +105,9 @@ while True:
             sorting = 'INSERTION_SORT'
 
         mas_likes = controller.getLikedVideos(catalog, category_name, country, numerovideos, sorting)
-        printLikedVideos(mas_likes)
+
+        if mas_likes != None:
+            printLikedVideos(mas_likes)
 
     elif int(inputs[0]) == 3:
         country = input("Ingrese el pais a buscar: ")
