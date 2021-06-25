@@ -26,6 +26,7 @@
 
 
 import config as cf
+import time
 from DISClib.Algorithms.Sorting import insertionsort as so
 from DISClib.Algorithms.Sorting import selectionsort as se
 from DISClib.ADT import list as lt
@@ -90,7 +91,7 @@ def getLikedVideos(catalog, category_name,country, numerovideos,sorting):
             id = categoria['category_id']
     lista_inicial = catalog['videos']
     lista_sortear= lt.newList('ARRAY_LIST')
-    for j in range(1,lt.size(catalog['videos']+1):
+    for j in range(1,lt.size(catalog['videos']+1)):
         video = lt.getElement(lista_inicial, j)
         if video["category_id"] == id:   
             if video["country"] == country:
@@ -123,10 +124,10 @@ def subList(catalog, numerovideos, numelem):
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 def cmpVideosByLikes(video1, video2):
-""" Devuelve verdadero (True) si los likes de video1 
-son menores que los del video2 Args: video1: informacion del 
-primer video que incluye su valor 'likes'"""
-    return (video1['likes']) < (video2['likes']))
+    """ Devuelve verdadero (True) si los likes de video1 
+    son menores que los del video2 Args: video1: informacion del 
+    primer video que incluye su valor 'likes'"""
+    return (video1['likes']) < (video2['likes'])
 # Funciones de ordenamiento
 
 def sortVideos(lista,sorting):
