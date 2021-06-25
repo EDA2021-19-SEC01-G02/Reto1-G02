@@ -84,20 +84,26 @@ def newCategory(id, name):
     return category
 
 def getLikedVideos(catalog, category_name,country, numerovideos,sorting):
-    for i in range (1, lt.size(catalog['categories']+1)):
-        lista_categorias = catalog['categories']
-        categoria = lt.getElement(lista_categorias, i)
-        if categoria['name']== category_name:
+    id = -1000
+    for i in range(1, lt.size(catalog['categories'])+1):
+        categoria = lt.getElement(catalog['categories'], i)
+        if categoria['name'].lower() == category_name.lower():
             id = categoria['category_id']
+    if id == -1000:
+        print('No existe esa categoría')
+        exit()
+
     lista_inicial = catalog['videos']
     lista_sortear= lt.newList('ARRAY_LIST')
-    for j in range(1,lt.size(catalog['videos']+1)):
+
+    for j in range(1,lt.size(catalog['videos'])+1):
         video = lt.getElement(lista_inicial, j)
-        if video["category_id"] == id:   
-            if video["country"] == country:
+        if video["category_id"] == id and video["country"].lower().strip() == country.lower():   
                 lt.addLast(lista_sortear, video)
-    sortVideos(lista_sortear,sorting)
-    sublista = lt.subList(lista_sortear,1 , numerovideos)
+
+    t, lista_sortear = sortVideos(lista_sortear, sorting)
+    print(t)
+    sublista = lt.subList(lista_sortear, 1, numerovideos)
     return sublista    
 
 # Funciones de consulta
@@ -107,29 +113,24 @@ def cmpVideosByLikes(video1, video2):
     """ Devuelve verdadero (True) si los likes de video1 
     son menores que los del video2 Args: video1: informacion del 
     primer video que incluye su valor 'likes'"""
-    return (video1['likes']) < (video2['likes'])
+    return (int(video1['likes'])) > int((video2['likes']))
 # Funciones de ordenamiento
 
 def sortVideos(lista,sorting):
-    if sorting == 1:
+    if sorting == 'SHELL_SORT':
         start_time = time.process_time() 
         sorted_list = sa.sort(lista,cmpVideosByLikes) 
         stop_time = time.process_time() 
-        elapsed_time_mseg = (stop_time - start_time)*1000
-        return elapsed_time_mseg, sorted_list
-    elif sorting == 2:
-        sub_list = lt.subList(lista['videos'], 1, size) 
-        sub_list = sub_list.copy() 
+        t = (stop_time - start_time)*1000
+    elif sorting == 'SELECTION_SORT':
         start_time = time.process_time() 
-        sorted_list = se.sort(sub_list,cmpVideosByLikes) 
+        sorted_list = se.sort(lista,cmpVideosByLikes) 
         stop_time = time.process_time() 
-        elapsed_time_mseg = (stop_time - start_time)*1000
-        return elapsed_time_mseg, sorted_list
+        t = (stop_time - start_time)*1000
     else:
-        sub_list = lt.subList(lista['videos'], 1, size) 
-        sub_list = sub_list.copy() 
         start_time = time.process_time() 
-        sorted_list = so.sort(sub_list,cmpVideosByLikes) 
+        sorted_list = so.sort(lista,cmpVideosByLikes) 
         stop_time = time.process_time() 
-        elapsed_time_mseg = (stop_time - start_time)*1000
-        return elapsed_time_mseg, sorted_list
+        t = (stop_time - start_time)*1000
+        
+    return t, sorted_list

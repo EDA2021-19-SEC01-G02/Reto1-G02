@@ -53,6 +53,11 @@ def initCatalog(format):
 def loadData(catalog):
     controller.loadData(catalog)
 
+def printLikedVideos(lista):
+    for i in range(1,lt.size(lista)+1):
+        video = lt.getElement(lista,i)
+        print('Nombre: {} \t Likes:{}'.format(video['title'],video['likes']))
+
 """
 Menu principal
 """
@@ -85,14 +90,21 @@ while True:
     elif int(inputs[0]) == 2:
         category_name = input("Ingrese la categoria a buscar: ")
         country = input("Ingrese el pais a buscar: ")
-        numerovideos = input("Ingrese el numero de videos que quiere listar: ")
+        numerovideos = int(input("Ingrese el numero de videos que quiere listar: "))
         print('Seleccione el tipo de algoritmo iterativo')
         print("1- Shellsort")
         print("2- Selectionsort")
         print("3- Insertsort")
         sorting = input("Ingrese el tipo de algoritmo iterativo: ")
-        mas_likes = controller.getLikedVideos(catalog, category_name,
-        country, numerovideos)
+
+        if sorting == 1:
+            sorting = 'SHELL_SORT'
+        elif sorting == 2:
+            sorting = 'SELECTION_SORT'
+        else:
+            sorting = 'INSERTION_SORT'
+
+        mas_likes = controller.getLikedVideos(catalog, category_name, country, numerovideos, sorting)
         printLikedVideos(mas_likes)
 
     elif int(inputs[0]) == 3:
