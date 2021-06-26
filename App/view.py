@@ -92,6 +92,7 @@ while True:
         category_name = input("Ingrese la categoria a buscar: ")
         country = input("Ingrese el pais a buscar: ")
         numerovideos = int(input("Ingrese el numero de videos que quiere listar: "))
+        solo laboratorio
         """
         print('Seleccione el tipo de algoritmo iterativo')
         print("1- Shellsort")
