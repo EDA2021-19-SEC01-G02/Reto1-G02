@@ -27,10 +27,10 @@
 
 import config as cf
 import time
-from DISClib.Algorithms.Sorting import insertionsort as so
-from DISClib.Algorithms.Sorting import selectionsort as se
+from DISClib.Algorithms.Sorting import quicksort as se
 from DISClib.ADT import list as lt
-from DISClib.Algorithms.Sorting import shellsort as sa
+from DISClib.Algorithms.Sorting import mergesort as sa
+
 assert cf
 
 """
@@ -131,20 +131,14 @@ def cmpVideosByLikes(video1, video2):
 # Funciones de ordenamiento
 
 def sortVideos(lista,sorting):
-    if sorting == 'SHELL_SORT':
+    if sorting == 'MERGE_SORT':
         start_time = time.process_time() 
         sorted_list = sa.sort(lista,cmpVideosByLikes) 
         stop_time = time.process_time() 
         t = (stop_time - start_time)*1000
-    elif sorting == 'SELECTION_SORT':
+    else:
         start_time = time.process_time() 
         sorted_list = se.sort(lista,cmpVideosByLikes) 
         stop_time = time.process_time() 
         t = (stop_time - start_time)*1000
-    else:
-        start_time = time.process_time() 
-        sorted_list = so.sort(lista,cmpVideosByLikes) 
-        stop_time = time.process_time() 
-        t = (stop_time - start_time)*1000
-
     return t, sorted_list

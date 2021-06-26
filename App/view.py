@@ -94,18 +94,16 @@ while True:
         numerovideos = int(input("Ingrese el numero de videos que quiere listar: "))
         solo laboratorio
         """
-        print('Seleccione el tipo de algoritmo iterativo')
-        print("1- Shellsort")
-        print("2- Selectionsort")
-        print("3- Insertsort")
+        print('Seleccione el tipo de algoritmo recursivo')
+        print("1- Mergesort")
+        print("2- Quicksort")
         sorting = input("Ingrese el tipo de algoritmo iterativo: ")
 
         if sorting == 1:
-            sorting = 'SHELL_SORT'
-        elif sorting == 2:
-            sorting = 'SELECTION_SORT'
+            sorting = 'MERGE_SORT'
         else:
-            sorting = 'INSERTION_SORT'
+            sorting = 'QUICK_SORT'
+     
 
 
         #Codigo solo para el lab 4
