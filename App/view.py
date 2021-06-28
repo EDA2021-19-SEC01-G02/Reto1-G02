@@ -52,14 +52,24 @@ def loadData(catalog):
     controller.loadData(catalog)
 
 def printLikedVideos(lista):
-    for i in range(1,lt.size(lista)+1):
-        video = lt.getElement(lista,i)
-        print('Nombre: {} \t Likes:{}'.format(video['title'],video['likes']))
+    if lista != None:
+        for i in range(1,lt.size(lista)+1):
+            video = lt.getElement(lista,i)
+            print('Nombre: {} \t Likes:{}'.format(video['title'],video['likes']))
+    else:
+        print('Verifique los datos ingresados.')
 
-def printComentariosVideos(lista_):
-    for k in range(1,lt.size(lista_)+1):
-        video_ = lt.getElement(lista_,k)
-        print('Nombre: {} \t Channel Title:{}'.format(video_['title'],video_['channel_title']))
+
+def printComentariosVideos(lista):
+    for k in range(1,lt.size(lista)+1):
+        video = lt.getElement(lista,k)
+        print('Nombre: {} \t Channel Title:{}'.format(video['title'],video['channel_title']))
+
+def printAltamentePositiva(video):
+    if video != None:
+        print('Nombre: {} \t Channel Title: {} \t Días: {}'.format(video['title'],video['channel_title'],video['days']))   
+    else:
+        print('Verifique los datos ingresados.')     
 """
 Menu principal
 """
@@ -85,19 +95,16 @@ while True:
         print(catalog['categories'])
 
     elif int(inputs[0]) == 2:
-         
         category_name = input("Ingrese la categoria a buscar: ")
         country = input("Ingrese el pais a buscar: ")
         numerovideos = int(input("Ingrese el numero de videos que quiere listar: "))
         mas_likes = controller.getLikedVideos(catalog, category_name, country, numerovideos)
-
-        if mas_likes != None:
-            printLikedVideos(mas_likes)
+        printLikedVideos(mas_likes)
 
     elif int(inputs[0]) == 3:
         country = input("Ingrese el pais a buscar: ")
         trending_positiva = controller.getAltamentePositiva(catalog, country)
-        printAuthorData(trending_positiva)
+        printAltamentePositiva(trending_positiva)
 
     elif int(inputs[0]) == 4:
         category_name = input("Ingrese la categoria a buscar: ")

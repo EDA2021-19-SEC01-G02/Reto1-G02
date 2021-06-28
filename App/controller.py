@@ -47,7 +47,6 @@ def loadData(catalog):
     loadVideos(catalog)
     loadCategories(catalog)
     
-
 def loadVideos(catalog):
     """
     Carga los videos del archivo. 
@@ -56,7 +55,6 @@ def loadVideos(catalog):
     input_file = csv.DictReader(open(videosfile, encoding='utf-8'))
     for video in input_file:
         model.addVideo(catalog, video)
-
 
 def loadCategories(catalog):
     """
@@ -71,9 +69,10 @@ def loadCategories(catalog):
 def getLikedVideos(catalog, category_name,country, numerovideos):
     return model.getLikedVideos(catalog, category_name,country, numerovideos)  
 
+def getAltamentePositiva(catalog, country):
+    return model.getAltamentePositiva(catalog, country)
+
 def getComentariosVideos(catalog, country, numero_videos, tag):
     return model.getComentariosVideos(catalog, country, numero_videos, tag)  
 
-# Funciones de ordenamiento
 
-# Funciones de consulta sobre el catálogo

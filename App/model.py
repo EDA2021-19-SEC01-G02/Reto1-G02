@@ -85,13 +85,12 @@ def getLikedVideos(catalog, category_name,country, numerovideos):
         categoria = lt.getElement(catalog['categories'], i)
         if categoria['name'].lower() == category_name.lower():
             id = categoria['category_id']
-    if id == -1000:
-        print('No existe esa categoría')
-    else:    
+
+    if id != -1000:   
         lista_inicial = catalog['videos']
         lista_sortear= lt.newList('ARRAY_LIST')
 
-        for j in range(1,lt.size(catalog['videos'])+1):
+        for j in range(1,lt.size(lista_inicial)+1):
             video = lt.getElement(lista_inicial, j)
             if video["category_id"] == id and video["country"].lower().strip() == country.lower():   
                 lt.addLast(lista_sortear, video)
@@ -99,9 +98,23 @@ def getLikedVideos(catalog, category_name,country, numerovideos):
         lista_sortear = sortVideosLikes(lista_sortear)
         if numerovideos <= lt.size(lista_sortear):
             sublista = lt.subList(lista_sortear, 1, numerovideos)
-        else:
-            print('No hay suficientes videos en la lista')
     return sublista   
+
+def getAltamentePositiva(catalog, country):
+    lista_inicial = catalog['videos']
+    lista_sortear= lt.newList('ARRAY_LIST')
+
+    for i in range(1,lt.size(lista_inicial)+1):
+        video = lt.getElement(lista_inicial, i)
+        if int(video["dislikes"])>0:
+            ratio = int(video["likes"])/int(video["dislikes"])
+            if video["country"].lower().strip() == country.lower() and ratio > 10:  
+                lt.addLast(lista_sortear, video)
+
+    if lt.size(lista_sortear) != 0:
+        return lt.getElement(conteo_trending(lista_sortear),1)
+    else:
+        return None
 
 def getSumamentePositiva(catalog, category_name):
     id = -1000
@@ -121,26 +134,28 @@ def getSumamentePositiva(catalog, category_name):
                 if video["category_id"] == id and ratio> 20:
                     lt.addLast(lista_sortear, video)
             
-    return Conteo_trending(catalog, lista_sortear)
+    return conteo_trending(catalog, lista_sortear)
 
-def Conteo_trending(catalog,lista):
+def conteo_trending(lista_videos):
+    lista_u = lt.newList('ARRAY_LIST')
     conteo = {}
-    lista_inicial = catalog['videos']
-    for i in range (1,lt.size(lista)+1):
-        id = lt.getElement(lista,i)
-        id = id["video_id"]
-        for j in range(1,lt.size(catalog['videos'])+1):
-            video = lt.getElement(lista_inicial, j) 
-            if video["video_id"] == id:
-                if id in conteo.keys():
-                    conteo[id]=+1
-                else:
-                    conteo[id]=1
 
-    conteo=pd.DataFrame(list(conteo.items()),columns = ['Video','Número de dias trending'])
-    conteo.sort_values()[0]
- 
-    return conteo
+    for i in range (1,lt.size(lista_videos)+1):
+        video = lt.getElement(lista_videos,i)
+        id = video['video_id']
+        if id in conteo:
+            conteo[id] += 1
+        else:
+            conteo[id] = 1
+            lt.addLast(lista_u, video)
+    
+    for j in range(1, lt.size(lista_u)+1):
+        video_u = lt.getElement(lista_u,j)
+        id_u = video_u['video_id']
+        video_u['days'] = conteo[id_u]
+
+    lista_u = sortVideosDays(lista_u)
+    return lista_u
 
 def getComentariosVideos(catalog, country, numerovideos, tag):
     video = -1000
@@ -178,6 +193,18 @@ def cmpVideosByLikes(video1, video2):
     primer video que incluye su valor 'likes'"""
     return (int(video1['likes'])) > int((video2['likes']))
 
+def cmpVideosById(video1, video2):
+    """ Devuelve verdadero (True) si los likes de video1 
+    son menores que los del video2 Args: video1: informacion del 
+    primer video que incluye su valor 'likes'"""
+    return (int(video1['video_id'])) > int((video2['video_id']))
+
+def cmpVideosByDays(video1, video2):
+    """ Devuelve verdadero (True) si los likes de video1 
+    son menores que los del video2 Args: video1: informacion del 
+    primer video que incluye su valor 'likes'"""
+    return (int(video1['days'])) > int((video2['days']))
+
 def cmpVideosByComments(video1, video2):
     """ Devuelve verdadero (True) si los likes de video1 
     son menores que los del video2 Args: video1: informacion del 
@@ -186,9 +213,14 @@ def cmpVideosByComments(video1, video2):
 
 # Funciones de ordenamiento
 
-def sortVideosComents(lista):
-    lista_sorteada = sa.sort(lista,cmpVideosByComments) 
-    return lista_sorteada
-
 def sortVideosLikes(lista):
     return sa.sort(lista,cmpVideosByLikes) 
+
+def sortVideosId(lista):
+    return sa.sort(lista,cmpVideosById)
+
+def sortVideosDays(lista):
+    return sa.sort(lista,cmpVideosByDays)
+    
+def sortVideosComents(lista):
+    return sa.sort(lista,cmpVideosByComments)  
