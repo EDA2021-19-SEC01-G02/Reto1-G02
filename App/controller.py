@@ -24,18 +24,17 @@ import config as cf
 import model
 import csv
 
-
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 """
 
 # Inicialización del Catálogo de videos
 
-def initCatalog(format):
+def initCatalog():
     """
     Llama a la función de inicialización del catálogo del modelo
     """
-    catalog = model.newCatalog(format)
+    catalog = model.newCatalog()
     return catalog
 
 # Funciones para la carga de datos
@@ -69,8 +68,8 @@ def loadCategories(catalog):
         cat['id\tname'] = cat['id\tname'].split("\t")
         model.addCategory(catalog, cat['id\tname'][0], cat['id\tname'][1])
 
-def getLikedVideos(catalog, category_name,country, numerovideos,sorting,muestra):
-    return model.getLikedVideos(catalog, category_name,country, numerovideos,sorting,muestra)  
+def getLikedVideos(catalog, category_name,country, numerovideos):
+    return model.getLikedVideos(catalog, category_name,country, numerovideos)  
 
 # Funciones de ordenamiento
 

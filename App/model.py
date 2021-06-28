@@ -26,9 +26,7 @@
 
 
 import config as cf
-import pandas as pd
-import time
-from DISClib.Algorithms.Sorting import quicksort as se
+
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import mergesort as sa
 
@@ -41,21 +39,16 @@ los mismos.
 
 # Construccion de modelos
 
-def newCatalog(format):
+def newCatalog():
     """
     Inicializa el catálogo de videos. Crea una lista vacia para guardar
     todos los videos, adicionalmente, crea una para las categorías. Retorna el catalogo inicializado.
     """
-    if format == 1:
-        format = 'ARRAY_LIST'
-    elif format == 2:
-        format = 'LINKED_LIST'
-
     catalog = {'videos': None,
                'categories': None}
 
-    catalog['videos'] = lt.newList(format)
-    catalog['categories'] = lt.newList(format)
+    catalog['videos'] = lt.newList('ARRAY_LIST')
+    catalog['categories'] = lt.newList('ARRAY_LIST')
 
     return catalog
 
@@ -84,15 +77,7 @@ def newCategory(id, name):
     category['category_id'] = id
     return category
 
-def getLikedVideos(catalog, category_name,country, numerovideos,sorting):
-    
-    """
-    Codigo solo para el lab 4
-    lista_muestra = lt.subList(catalog['videos'],1,muestra)
-    t, lista_muestra = sortVideos(lista_muestra, sorting)
-    print(t)
-    return None
-    """
+def getLikedVideos(catalog, category_name,country, numerovideos):
     id = -1000
     sublista = None
 
@@ -111,14 +96,13 @@ def getLikedVideos(catalog, category_name,country, numerovideos,sorting):
             if video["category_id"] == id and video["country"].lower().strip() == country.lower():   
                 lt.addLast(lista_sortear, video)
 
-        t, lista_sortear = sortVideos(lista_sortear, sorting)
+        lista_sortear = sortVideosLikes(lista_sortear)
         if numerovideos <= lt.size(lista_sortear):
             sublista = lt.subList(lista_sortear, 1, numerovideos)
         else:
             print('No hay suficientes videos en la lista')
-            
-    
-    return sublista    
+    return sublista   
+
 def getSumamentePositiva(catalog, category_name):
     id = -1000
     lista_sortear= lt.newList('ARRAY_LIST')
@@ -157,7 +141,6 @@ def Conteo_trending(catalog,lista):
     conteo.sort_values()[0]
  
     return conteo
-   
 
 def getComentariosVideos(catalog, country, numero_videos, tag):
     video = -1000
@@ -200,20 +183,12 @@ def cmpVideosByComments(video1, video2):
     son menores que los del video2 Args: video1: informacion del 
     primer video que incluye su valor 'likes'"""
     return (int(video1['comment_count'])) > int((video2['comment_count']))
+
 # Funciones de ordenamiento
 
 def sortVideosComents(lista):
     lista_sorteada = sa.sort(lista,cmpVideosByComments) 
     return lista_sorteada
-def sortVideos(lista,sorting):
-    if sorting == 'MERGE_SORT':
-        start_time = time.process_time() 
-        sorted_list = sa.sort(lista,cmpVideosByLikes) 
-        stop_time = time.process_time() 
-        t = (stop_time - start_time)*1000
-    else:
-        start_time = time.process_time() 
-        sorted_list = se.sort(lista,cmpVideosByLikes) 
-        stop_time = time.process_time() 
-        t = (stop_time - start_time)*1000
-    return t, sorted_list
+
+def sortVideosLikes(lista):
+    return sa.sort(lista,cmpVideosByLikes) 

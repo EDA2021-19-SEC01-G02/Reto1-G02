@@ -25,8 +25,7 @@ import sys
 import controller
 from DISClib.ADT import list as lt
 assert cf
-default_limit = 1000
-sys.setrecursionlimit(default_limit*10)
+
 
 
 """
@@ -46,9 +45,8 @@ def printMenu():
     print("0- Salir")
 
 
-def initCatalog(format):
-    return controller.initCatalog(format)
-
+def initCatalog():
+    return controller.initCatalog()
 
 def loadData(catalog):
     controller.loadData(catalog)
@@ -66,13 +64,8 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
 
-        print('Seleccione la forma en que quiere cargar los datos')
-        print("1- Array list")
-        print("2- Lista simplemente encadenada")
-        format = int(input('Seleccione una opción para continuar\n'))
-
         print("Cargando información de los archivos ....")
-        catalog = initCatalog(format)
+        catalog = initCatalog()
         loadData(catalog)
         print('Videos cargados: ' + str(lt.size(catalog['videos'])))
         
@@ -88,32 +81,11 @@ while True:
         print(catalog['categories'])
 
     elif int(inputs[0]) == 2:
-        """ 
+         
         category_name = input("Ingrese la categoria a buscar: ")
         country = input("Ingrese el pais a buscar: ")
         numerovideos = int(input("Ingrese el numero de videos que quiere listar: "))
-        solo laboratorio
-        """
-        print('Seleccione el tipo de algoritmo recursivo')
-        print("1- Mergesort")
-        print("2- Quicksort")
-        sorting = input("Ingrese el tipo de algoritmo iterativo: ")
-
-        if sorting == 1:
-            sorting = 'MERGE_SORT'
-        else:
-            sorting = 'QUICK_SORT'
-     
-
-
-        #Codigo solo para el lab 4
-        muestra = int(input('Ingrese el tamaño de la muestra: '))
-        category_name = None
-        country = None
-        numerovideos = None
-
-
-        mas_likes = controller.getLikedVideos(catalog, category_name, country, numerovideos, sorting, muestra)
+        mas_likes = controller.getLikedVideos(catalog, category_name, country, numerovideos)
 
         if mas_likes != None:
             printLikedVideos(mas_likes)
