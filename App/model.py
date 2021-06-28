@@ -26,6 +26,7 @@
 
 
 import config as cf
+import pandas as pd
 import time
 from DISClib.Algorithms.Sorting import quicksort as se
 from DISClib.ADT import list as lt
@@ -83,14 +84,14 @@ def newCategory(id, name):
     category['category_id'] = id
     return category
 
-def getLikedVideos(catalog, category_name,country, numerovideos,sorting,muestra):
+def getLikedVideos(catalog, category_name,country, numerovideos,sorting):
     
-    #Codigo solo para el lab 4
+    """
+    Codigo solo para el lab 4
     lista_muestra = lt.subList(catalog['videos'],1,muestra)
     t, lista_muestra = sortVideos(lista_muestra, sorting)
     print(t)
     return None
-
     """
     id = -1000
     sublista = None
@@ -118,7 +119,72 @@ def getLikedVideos(catalog, category_name,country, numerovideos,sorting,muestra)
             
     
     return sublista    
-    """
+def getSumamentePositiva(catalog, category_name):
+    id = -1000
+    lista_sortear= lt.newList('ARRAY_LIST')
+    for i in range(1, lt.size(catalog['categories'])+1):
+        categoria = lt.getElement(catalog['categories'], i)
+        if categoria['name'].lower() == category_name.lower():
+            id = categoria['category_id']
+    if id == -1000:
+        print('No existe esa categoría')
+    else:
+        lista_inicial = catalog['videos']
+        for j in range(1,lt.size(catalog['videos'])+1):
+            video = lt.getElement(lista_inicial,j)
+            if int(video["dislikes"])>0:
+                ratio = int(video["likes"])/int(video["dislikes"])
+                if video["category_id"] == id and ratio> 20:
+                    lt.addLast(lista_sortear, video)
+            
+    return Conteo_trending(catalog, lista_sortear)
+
+def Conteo_trending(catalog,lista):
+    conteo = {}
+    lista_inicial = catalog['videos']
+    for i in range (1,lt.size(lista)+1):
+        id = lt.getElement(lista,i)
+        id = id["video_id"]
+        for j in range(1,lt.size(catalog['videos'])+1):
+            video = lt.getElement(lista_inicial, j) 
+            if video["video_id"] == id:
+                if id in conteo.keys():
+                    conteo[id]=+1
+                else:
+                    conteo[id]=1
+
+    conteo=pd.DataFrame(list(conteo.items()),columns = ['Video','Número de dias trending'])
+    conteo.sort_values()[0]
+ 
+    return conteo
+   
+
+def getComentariosVideos(catalog, country, numero_videos, tag):
+    video = -1000
+    lista_sortear= lt.newList('ARRAY_LIST')
+    for i in range(1, lt.size(catalog['videos'])+1):
+        video = lt.getElement(catalog['videos'], i)
+        if video["country"].lower().strip() == country.lower():
+            lt.addLast(lista_sortear, video)    
+    if lt.size(lista_sortear['videos'])==0:
+        print('No hay referencias de videos de este pais')
+    else:
+        lista_comentarios = lt.newList('ARRAY_LIST')
+        for k in range(1, lt.size(catalog['videos'])+1):
+            video_comentarios = lt.getElement(catalog['videos'], k)
+            tags = video["tags"]
+            tags = str(tags)
+            tag_escogido = str(tag)        
+            if tags.find(tag_escogido)>=0:
+                lt.addLast(lista_comentarios, video_comentarios)
+        
+        lista_sortear = sortVideos(lista_sortear)
+        if numerovideos <= lt.size(lista_sortear):
+            sublista = lt.subList(lista_sortear, 1, numerovideos)
+        else:
+            print('No hay suficientes videos en la lista')
+    return sublista
+
 
 # Funciones de consulta
 
@@ -128,8 +194,17 @@ def cmpVideosByLikes(video1, video2):
     son menores que los del video2 Args: video1: informacion del 
     primer video que incluye su valor 'likes'"""
     return (int(video1['likes'])) > int((video2['likes']))
+
+def cmpVideosByComments(video1, video2):
+    """ Devuelve verdadero (True) si los likes de video1 
+    son menores que los del video2 Args: video1: informacion del 
+    primer video que incluye su valor 'likes'"""
+    return (int(video1['comment_count'])) > int((video2['comment_count']))
 # Funciones de ordenamiento
 
+def sortVideosComents(lista):
+    lista_sorteada = sa.sort(lista,cmpVideosByComments) 
+    return lista_sorteada
 def sortVideos(lista,sorting):
     if sorting == 'MERGE_SORT':
         start_time = time.process_time() 
