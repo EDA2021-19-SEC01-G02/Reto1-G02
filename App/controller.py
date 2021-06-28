@@ -70,7 +70,9 @@ def loadCategories(catalog):
         model.addCategory(catalog, cat['id\tname'][0], cat['id\tname'][1])
 
 def getLikedVideos(catalog, category_name,country, numerovideos,sorting,muestra):
-    return model.getLikedVideos(catalog, category_name,country, numerovideos,sorting,muestra)  
+    return model.getLikedVideos(catalog, category_name,country, numerovideos,sorting,muestra)
+def getComentariosVideos(catalog, country, numero_videos, tag):
+    return model.getComentariosVideos(catalog, country, numero_videos, tag)  
 
 # Funciones de ordenamiento
 

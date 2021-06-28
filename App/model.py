@@ -159,14 +159,14 @@ def Conteo_trending(catalog,lista):
     return conteo
    
 
-def getComentariosVideos(catalog, country, numero_videos, tag):
+def getComentariosVideos(catalog, country, numerovideos, tag):
     video = -1000
     lista_sortear= lt.newList('ARRAY_LIST')
     for i in range(1, lt.size(catalog['videos'])+1):
         video = lt.getElement(catalog['videos'], i)
         if video["country"].lower().strip() == country.lower():
             lt.addLast(lista_sortear, video)    
-    if lt.size(lista_sortear['videos'])==0:
+    if lt.size(lista_sortear)==0:
         print('No hay referencias de videos de este pais')
     else:
         lista_comentarios = lt.newList('ARRAY_LIST')
@@ -178,9 +178,9 @@ def getComentariosVideos(catalog, country, numero_videos, tag):
             if tags.find(tag_escogido)>=0:
                 lt.addLast(lista_comentarios, video_comentarios)
         
-        lista_sortear = sortVideos(lista_sortear)
-        if numerovideos <= lt.size(lista_sortear):
-            sublista = lt.subList(lista_sortear, 1, numerovideos)
+        lista_sortear = sortVideosComents(lista_comentarios)
+        if numerovideos <= lt.size(lista_comentarios):
+            sublista = lt.subList(lista_comentarios, 1, numerovideos)
         else:
             print('No hay suficientes videos en la lista')
     return sublista
