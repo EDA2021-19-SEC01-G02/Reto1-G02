@@ -71,6 +71,9 @@ def loadCategories(catalog):
 def getLikedVideos(catalog, category_name,country, numerovideos):
     return model.getLikedVideos(catalog, category_name,country, numerovideos)  
 
+def getComentariosVideos(catalog, country, numero_videos, tag):
+    return model.getComentariosVideos(catalog, country, numero_videos, tag)  
+
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo

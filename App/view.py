@@ -56,6 +56,10 @@ def printLikedVideos(lista):
         video = lt.getElement(lista,i)
         print('Nombre: {} \t Likes:{}'.format(video['title'],video['likes']))
 
+def printComentariosVideos(lista_):
+    for k in range(1,lt.size(lista_)+1):
+        video_ = lt.getElement(lista_,k)
+        print('Nombre: {} \t Channel Title:{}'.format(video_['title'],video_['channel_title']))
 """
 Menu principal
 """
@@ -102,9 +106,10 @@ while True:
 
     elif int(inputs[0]) == 5:
         country = input("Ingrese el pais a buscar: ")
-        numero_videos = input("Ingrese el numero de videos que quiere listar: ")
+        numerovideos = input("Ingrese el numero de videos que quiere listar: ")
         tag = input("Ingrese la etiqueta del video: ")
-        mas_comentarios = controller.getComentariosVideos(catalog, country, numero_videos, tag)
+        mas_comentarios = controller
+
         printComentariosVideos(mas_comentarios)
 
     else:
