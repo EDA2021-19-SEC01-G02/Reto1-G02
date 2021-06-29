@@ -77,6 +77,7 @@ def newCategory(id, name):
     category['category_id'] = id
     return category
 
+
 def getLikedVideos(catalog, category_name,country, numerovideos):
     id = -1000
     sublista = None
@@ -96,9 +97,11 @@ def getLikedVideos(catalog, category_name,country, numerovideos):
                 lt.addLast(lista_sortear, video)
 
         lista_sortear = sortVideosLikes(lista_sortear)
+        lista_sortear = getUnicos(lista_sortear)
         if numerovideos <= lt.size(lista_sortear):
             sublista = lt.subList(lista_sortear, 1, numerovideos)
     return sublista   
+
 
 def getAltamentePositiva(catalog, country):
     lista_inicial = catalog['videos']
@@ -108,7 +111,8 @@ def getAltamentePositiva(catalog, country):
         video = lt.getElement(lista_inicial, i)
         if int(video["dislikes"])>0:
             ratio = int(video["likes"])/int(video["dislikes"])
-            if video["country"].lower().strip() == country.lower() and ratio > 10:  
+            if video["country"].lower().strip() == country.lower() and ratio > 10:
+                video['ratio'] = ratio  
                 lt.addLast(lista_sortear, video)
 
     if lt.size(lista_sortear) != 0:
@@ -116,27 +120,65 @@ def getAltamentePositiva(catalog, country):
     else:
         return None
 
+
 def getSumamentePositiva(catalog, category_name):
     id = -1000
+    lista_inicial = catalog['videos']
     lista_sortear= lt.newList('ARRAY_LIST')
+
     for i in range(1, lt.size(catalog['categories'])+1):
         categoria = lt.getElement(catalog['categories'], i)
         if categoria['name'].lower() == category_name.lower():
             id = categoria['category_id']
-    if id == -1000:
-        print('No existe esa categoría')
-    else:
-        lista_inicial = catalog['videos']
-        for j in range(1,lt.size(catalog['videos'])+1):
+
+    if id != -1000:
+        for j in range(1,lt.size(lista_inicial)+1):
             video = lt.getElement(lista_inicial,j)
             if int(video["dislikes"])>0:
                 ratio = int(video["likes"])/int(video["dislikes"])
-                if video["category_id"] == id and ratio> 20:
+                if video["category_id"] == id and ratio > 20:
+                    video['ratio'] = ratio
                     lt.addLast(lista_sortear, video)
-            
-    return conteo_trending(catalog, lista_sortear)
+
+    if lt.size(lista_sortear) != 0:
+        return lt.getElement(conteo_trending(lista_sortear),1)
+    else:
+        return None
+
 
 def conteo_trending(lista_videos):
+    lista_u = sortVideosDays(getUnicos(lista_videos))
+    return lista_u
+
+
+def getComentariosVideos(catalog, country, numerovideos, tag):
+    video = -1000
+    lista_inicial = catalog['videos']
+    lista_pais= lt.newList('ARRAY_LIST')
+    sublista = None
+
+    for i in range(1, lt.size(lista_inicial)+1):
+        video = lt.getElement(lista_inicial, i)
+        if video["country"].lower().strip() == country.lower():
+            lt.addLast(lista_pais, video) 
+
+    if lt.size(lista_pais) != 0:
+        lista_comentarios = lt.newList('ARRAY_LIST')
+        for j in range(1, lt.size(lista_pais)+1):
+            video_comentarios = lt.getElement(lista_pais, j)
+            tags = str(video_comentarios["tags"])
+
+            if tag.lower() in tags.lower():
+                lt.addLast(lista_comentarios, video_comentarios)
+
+        lista_comentarios = sortVideosComents(lista_comentarios)
+        lista_sortear = getUnicos(lista_comentarios)
+        if numerovideos <= lt.size(lista_sortear):
+            sublista = lt.subList(lista_sortear, 1, numerovideos)
+    return sublista
+
+
+def getUnicos(lista_videos):
     lista_u = lt.newList('ARRAY_LIST')
     conteo = {}
 
@@ -148,41 +190,13 @@ def conteo_trending(lista_videos):
         else:
             conteo[id] = 1
             lt.addLast(lista_u, video)
-    
+
     for j in range(1, lt.size(lista_u)+1):
         video_u = lt.getElement(lista_u,j)
         id_u = video_u['video_id']
         video_u['days'] = conteo[id_u]
-
-    lista_u = sortVideosDays(lista_u)
+    
     return lista_u
-
-def getComentariosVideos(catalog, country, numerovideos, tag):
-    video = -1000
-    lista_sortear= lt.newList('ARRAY_LIST')
-    for i in range(1, lt.size(catalog['videos'])+1):
-        video = lt.getElement(catalog['videos'], i)
-        if video["country"].lower().strip() == country.lower():
-            lt.addLast(lista_sortear, video)    
-    if lt.size(lista_sortear)==0:
-        print('No hay referencias de videos de este pais')
-    else:
-        lista_comentarios = lt.newList('ARRAY_LIST')
-        for k in range(1, lt.size(catalog['videos'])+1):
-            video_comentarios = lt.getElement(catalog['videos'], k)
-            tags = video["tags"]
-            tags = str(tags)
-            tag_escogido = str(tag)        
-            if tags.find(tag_escogido)>=0:
-                lt.addLast(lista_comentarios, video_comentarios)
-        
-        lista_sortear = sortVideosComents(lista_comentarios)
-        if numerovideos <= lt.size(lista_comentarios):
-            sublista = lt.subList(lista_comentarios, 1, numerovideos)
-        else:
-            print('No hay suficientes videos en la lista')
-    return sublista
-
 
 # Funciones de consulta
 
@@ -192,12 +206,6 @@ def cmpVideosByLikes(video1, video2):
     son menores que los del video2 Args: video1: informacion del 
     primer video que incluye su valor 'likes'"""
     return (int(video1['likes'])) > int((video2['likes']))
-
-def cmpVideosById(video1, video2):
-    """ Devuelve verdadero (True) si los likes de video1 
-    son menores que los del video2 Args: video1: informacion del 
-    primer video que incluye su valor 'likes'"""
-    return (int(video1['video_id'])) > int((video2['video_id']))
 
 def cmpVideosByDays(video1, video2):
     """ Devuelve verdadero (True) si los likes de video1 
@@ -215,9 +223,6 @@ def cmpVideosByComments(video1, video2):
 
 def sortVideosLikes(lista):
     return sa.sort(lista,cmpVideosByLikes) 
-
-def sortVideosId(lista):
-    return sa.sort(lista,cmpVideosById)
 
 def sortVideosDays(lista):
     return sa.sort(lista,cmpVideosByDays)

@@ -59,17 +59,26 @@ def printLikedVideos(lista):
     else:
         print('Verifique los datos ingresados.')
 
-
 def printComentariosVideos(lista):
-    for k in range(1,lt.size(lista)+1):
-        video = lt.getElement(lista,k)
-        print('Nombre: {} \t Channel Title:{}'.format(video['title'],video['channel_title']))
+    if lista != None:
+        for i in range(1,lt.size(lista)+1):
+            video = lt.getElement(lista,i)
+            print('Nombre: {} \t Comentarios: {} \t Tags: {}'.format(video['title'],video['comment_count'],video['tags']))
+    else:
+        print('Verifique los datos ingresados.')
 
 def printAltamentePositiva(video):
     if video != None:
         print('Nombre: {} \t Channel Title: {} \t Días: {}'.format(video['title'],video['channel_title'],video['days']))   
     else:
-        print('Verifique los datos ingresados.')     
+        print('Verifique los datos ingresados.')   
+
+def printSumamentePositiva(video):
+    if video != None:
+        print('Nombre: {} \t Channel Title: {} \t Días: {}'.format(video['title'],video['channel_title'],video['days']))   
+    else:
+        print('Verifique los datos ingresados.')   
+
 """
 Menu principal
 """
@@ -113,10 +122,9 @@ while True:
 
     elif int(inputs[0]) == 5:
         country = input("Ingrese el pais a buscar: ")
-        numerovideos = input("Ingrese el numero de videos que quiere listar: ")
+        numero_videos = int(input("Ingrese el numero de videos que quiere listar: "))
         tag = input("Ingrese la etiqueta del video: ")
-        mas_comentarios = controller
-
+        mas_comentarios = controller.getComentariosVideos(catalog, country, numero_videos, tag)
         printComentariosVideos(mas_comentarios)
 
     else:
