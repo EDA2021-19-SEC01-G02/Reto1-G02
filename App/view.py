@@ -55,29 +55,34 @@ def printLikedVideos(lista):
     if lista != None:
         for i in range(1,lt.size(lista)+1):
             video = lt.getElement(lista,i)
-            print('Nombre: {} \t Likes:{}'.format(video['title'],video['likes']))
-    else:
-        print('Verifique los datos ingresados.')
-
-def printComentariosVideos(lista):
-    if lista != None:
-        for i in range(1,lt.size(lista)+1):
-            video = lt.getElement(lista,i)
-            print('Nombre: {} \t Comentarios: {} \t Tags: {}'.format(video['title'],video['comment_count'],video['tags']))
+            print('trending_date : {} \t title: {} \t channel_title : {} \t publish_time : {} \t views: {} \t likes: {} \t dislikes: {}'
+            .format(video['trending_date'],video['title'],video['channel_title'],video['publish_time'],video['views'],video['likes'],video['dislikes']))
     else:
         print('Verifique los datos ingresados.')
 
 def printAltamentePositiva(video):
     if video != None:
-        print('Nombre: {} \t Channel Title: {} \t Días: {}'.format(video['title'],video['channel_title'],video['days']))   
+        print('title: {} \t channel_title : {} \t country : {} \t ratio_likes_dislikes: {:.2f} \t days: {}'
+            .format(video['title'],video['channel_title'],video['country'],video['ratio'],video['days'])) 
     else:
-        print('Verifique los datos ingresados.')   
+        print('Verifique los datos ingresados.')  
 
 def printSumamentePositiva(video):
     if video != None:
-        print('Nombre: {} \t Channel Title: {} \t Días: {}'.format(video['title'],video['channel_title'],video['days']))   
+        print('title: {} \t channel_title : {} \t category_id : {} \t ratio: {:.2f} \t days: {}'
+            .format(video['title'],video['channel_title'],video['category_id'],video['ratio'],video['days']))
     else:
         print('Verifique los datos ingresados.')   
+
+def printComentariosVideos(lista):
+    if lista != None:
+        for i in range(1,lt.size(lista)+1):
+            video = lt.getElement(lista,i)
+            print('title: {} \t channel_title : {} \t publish_time : {} \t views: {} \t likes: {} \t dislikes: {} \t comment_count: {} \t tags: {}'
+            .format(video['title'],video['channel_title'],video['publish_time'],video['views'],video['likes'],video['dislikes'],video['comment_count'],video['tags']))
+    else:
+        print('Verifique los datos ingresados.')
+
 
 """
 Menu principal
