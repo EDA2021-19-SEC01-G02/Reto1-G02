@@ -25,7 +25,6 @@ import sys
 import controller
 from DISClib.ADT import list as lt
 assert cf
-from tabulate import tabulate
 
 
 
@@ -63,13 +62,15 @@ def printLikedVideos(lista):
 
 def printAltamentePositiva(video):
     if video != None:
-        print(tabulate([[video['title'], video['channel_title'], video['country'], video['ratio'], video['days']]], headers=['title', 'channel_title', 'country', 'ratio_likes_dislikes', 'Días'])) 
+        print('title: {} \t channel_title : {} \t country : {} \t ratio_likes_dislikes: {:.2f} \t days: {}'
+            .format(video['title'],video['channel_title'],video['country'],video['ratio'],video['days'])) 
     else:
         print('Verifique los datos ingresados.')  
 
 def printSumamentePositiva(video):
     if video != None:
-        print(tabulate([[video['title'], video['channel_title'], video['category_id'], video['ratio'], video['days']]], headers=['title', 'channel_title', 'category_id', 'ratio_likes_dislikes', 'Días']))
+        print('title: {} \t channel_title : {} \t category_id : {} \t ratio: {:.2f} \t days: {}'
+            .format(video['title'],video['channel_title'],video['category_id'],video['ratio'],video['days']))
     else:
         print('Verifique los datos ingresados.')   
 
